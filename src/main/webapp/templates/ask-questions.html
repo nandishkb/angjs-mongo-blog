@@ -1,0 +1,28 @@
+<div class="container">
+	<div class="row well well-lg">
+		<h2>Ask Question</h2>
+		<hr>
+		<div class="col-md-8">
+			<form ng-controller='AskQuestionController' ng-submit='submitQuestion(question)' name='ask-question-form' class="ask-question-form" accept-charset="UTF-8" id="ask-question-nav">
+		 		<div class="form-group">
+					 <label class="sr-only" for="title">Title</label>
+					 <input ng-model='question.title' type="text" class="form-control" id="title" placeholder="Enter title here..." autofocus="autofocus" required>
+				</div>
+				<div class="form-group">
+					 <label class="sr-only" for="description">Description</label>
+					 <textarea ng-model='question.description' rows="10" class="form-control" id="description" placeholder="Enter description here..." required></textarea>
+				</div>
+				<div class="form-group">
+					 <button ng-hide='adding' type="submit" class="btn btn-primary"><strong>Submit</strong></button>
+					 <img alt="loading" src="images/loading.gif" ng-show="adding">
+				</div>
+		 	</form>
+		</div>
+		<div class="col-md-3 col-md-offset-1 visible-md visible-lg contact-banner-poster">
+			<img alt="Poster: ask question banner" src="images/ask.jpg">
+		</div>
+	</div>
+	<br><br>
+	
+	<site-features></site-features>
+</div>

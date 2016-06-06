@@ -1,0 +1,30 @@
+<div ng-controller='ViewQuestionsController' class="container">
+	<div class="row well well-lg">
+		<h2>View Questions</h2>
+		<hr>
+		<div class="col-md-12 table-responsive">
+			<table class='col-md-12' id="view-questions-table" border="1">
+				<thead class='table-head'>
+					<tr>
+						<th>No.</th>
+						<th>Question Title</th>
+						<th>Question Description</th>
+						<th>No. of Answers</th>
+					</tr>
+				</thead>
+				<tbody ng-show="isShown">
+					<tr ng-repeat="q in questions">
+						<td>{{$index + 1}}</td>
+						<td id='text-allign'>{{q.title}}</td>
+						<td id='text-allign'>{{q.description}}</td>
+						<td>{{q.answers.length}}</td>
+					</tr>
+				</tbody>
+			</table>
+			<img alt="loading" src="images/loading.gif" ng-hide="isShown">
+		</div>
+	</div>
+	<br><br>
+	
+	<site-features></site-features>
+</div>

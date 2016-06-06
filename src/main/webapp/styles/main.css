@@ -1,11 +1,17 @@
 @CHARSET "ISO-8859-1";
 
 
+hr {
+	border-color: black;
+	border-width: 2px;
+}
+
 #login-dp{
     min-width: 250px;
     padding: 14px 14px 0;
     overflow:hidden;
-    background-color:rgba(255,255,255,.8);
+    color:white;
+    background-color:rgba(0,0,0,.8);
 }
 
 #login-dp .help-block{
@@ -28,6 +34,30 @@
     margin-bottom: 10px;
 }
 
+.explore-buttons a {
+	font-size: medium;
+}
+
+.explore-buttons a:HOVER {
+	font-size: large;
+	text-decoration: underline;
+}
+
+.explore .dropdown-menu {
+	background-color: rgba(0,0,0,.8);
+	border-radius: 15px;
+	
+}
+
+.logout .dropdown-menu {
+	background-color: rgba(0,0,0,.8);
+	border-radius: 15px;
+}
+
+.logout a {
+	font-size: 17px;
+}
+
 .btn-fb{
     color: #fff;
     background-color:#3b5998;
@@ -44,6 +74,7 @@
     color: #fff;
     background-color:#59b5fa;
 }
+
 /* @media(min-width:500px){
     #login-dp{
         background-color: inherit;
@@ -69,7 +100,73 @@
 	border-radius: 15px;
 }
 
+.contact-banner-poster img {
+	border-radius: 15px;
+}
+
+.social-icons img {
+	border-radius: 15px;
+}
+
 .navbar-inverse .navbar-nav li a {
 	color: #EF621D;
 	font-weight: 700;
 }
+
+.ng-invalid.ng-dirty {
+  border-color: red;
+  border-width: 2px;
+}
+
+.ng-valid.ng-dirty {
+  border-color: green;
+  border-width: 2px;
+}
+
+.register-form .form-group input, .register-form .form-group button {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.ask-question-form .form-group input, .ask-question-form .form-group button {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.ask-question-form .form-group textarea {
+	font-size: 20px;
+}
+
+.search-form .form-group input, .search-form .form-group button {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#view-questions-table, th, td {
+	border-width: 3px;
+    border-spacing: 2px;
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid black;
+}
+
+#view-questions-table thead tr th {
+	background-color: #EF621D;
+	font-size: 22px;
+	text-align: center;
+}
+
+#view-questions-table tbody tr td {
+	font-size: 20px;
+	text-align: center;
+}
+
+#view-questions-table #text-allign {
+	text-align: left;
+}
+
+.table-responsive
+{
+    overflow-x: auto;
+}
+

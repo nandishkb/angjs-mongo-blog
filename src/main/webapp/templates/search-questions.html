@@ -1,0 +1,41 @@
+<div ng-controller='SearchQuestionsController' class="container">
+	<div class="row well well-lg">
+		<h2>Search Questions</h2>
+		<hr>
+		<div class="col-md-12 table-responsive">
+			<form ng-submit='searchQuestion(searchString)' name='search-form' class="search-form" accept-charset="UTF-8" id="search-nav">
+				<div class="row col-md-5">
+			 		<div class="form-group">
+						 <label class="sr-only" for="searchString">Search your question here...</label>
+						 <input ng-model='searchString' type="search" class="form-control" id="searchString" placeholder="Search your question here..." autofocus="autofocus" required>
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary"><strong>Search</strong></button>
+					</div>
+				</div>
+			</form>
+			<table class='col-md-12' id="view-questions-table" border="1">
+				<thead class='table-head'>
+					<tr>
+						<th>No.</th>
+						<th>Question Title</th>
+						<th>Question Description</th>
+						<th>No. of Answers</th>
+					</tr>
+				</thead>
+				<tbody ng-hide="isSearching">
+					<tr ng-repeat="q in questions">
+						<td>{{$index + 1}}</td>
+						<td id='text-allign'>{{q.title}}</td>
+						<td id='text-allign'>{{q.description}}</td>
+						<td>{{q.answers.length}}</td>
+					</tr>
+				</tbody>
+			</table>
+			<img alt="loading" src="images/loading.gif" ng-show="isSearching">
+		</div>
+	</div>
+	<br><br>
+	
+	<site-features></site-features>
+</div>
