@@ -78,7 +78,7 @@
 				Notification.error('Login Failed. Check your username/password and try again.');
 				document.getElementById("login-nav").reset();
 				console.log("Error in loggin in");
-				$scope.emitLoginStatus(true);
+				$scope.emitLoginStatus(false);
 			});
 		};
 		$scope.emitLoginStatus = function(data) {
@@ -137,7 +137,7 @@
 				$scope.adding=false;
 				Notification.error('Failed to post Question. Please try again.');
 				console.log("Error in posting Question");
-				if (status === 404) {
+				if (status === 401) {
 					console.log('Authentication failed. Redirecting to error page');
 					$rootScope.$emit("logout");
 					$location.url('/auth-failed');
@@ -161,7 +161,7 @@
 			console.log(status);
 			$scope.questions = questions_sample;
 			$scope.isShown = true;
-			if (status === 404) {
+			if (status === 401) {
 				console.log('Authentication failed. Redirecting to error page');
 				$rootScope.$emit("logout");
 				$location.url('/auth-failed');
@@ -188,7 +188,7 @@
 				console.log("error in retriving questions")
 				$scope.questions = questions_sample;
 				$scope.isSearching = false;
-				if (status === 404) {
+				if (status === 401) {
 					console.log('Authentication failed. Redirecting to error page');
 					$rootScope.$emit("logout");
 					$location.url('/auth-failed');
