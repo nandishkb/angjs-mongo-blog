@@ -4,7 +4,7 @@
 (function() {
 	var app = angular.module('blog', ['ngRoute', 'ui-notification']);
 	
-	app.controller('NavbarController', function($timeout, $scope, $rootScope) {
+	app.controller('NavbarController', function($timeout, $scope, $rootScope, $location) {
 		
 		$scope.loggedIn = false;
 		
@@ -17,6 +17,7 @@
 		$rootScope.$on("loginSuccess", function() {
 			console.log("Success");
 			$scope.loggedIn = true;
+			$location.url('/home');
 	    });
 		
 		$rootScope.$on("loginFailure", function() {
@@ -77,7 +78,7 @@
 				Notification.error('Login Failed. Check your username/password and try again.');
 				document.getElementById("login-nav").reset();
 				console.log("Error in loggin in");
-				$scope.emitLoginStatus(false);
+				$scope.emitLoginStatus(true);
 			});
 		};
 		$scope.emitLoginStatus = function(data) {
@@ -120,7 +121,7 @@
         }
 	});
 	
-	app.controller('AskQuestionController', function($scope, $http, Notification) {
+	app.controller('AskQuestionController', function($scope, $rootScope, $http, Notification, $location) {
 		$scope.adding = false;
 		$scope.submitQuestion = function(question) {
 			console.log("Submit Question Method called");
@@ -132,15 +133,20 @@
 				Notification.success('Question successfully posted');
 				document.getElementById("register-nav").reset();
 			});
-			promise.error(function() {
+			promise.error(function(response, status) {
 				$scope.adding=false;
 				Notification.error('Failed to post Question. Please try again.');
 				console.log("Error in posting Question");
+				if (status === 404) {
+					console.log('Authentication failed. Redirecting to error page');
+					$rootScope.$emit("logout");
+					$location.url('/auth-failed');
+				}
 			});
 		};
 	});
 	
-	app.controller('ViewQuestionsController', function($scope, $http, Notification) {
+	app.controller('ViewQuestionsController', function($scope, $rootScope, $http, Notification, $location) {
 		$scope.isShown = false;
 		var promise = $http.get("blog/techspace/questions");
 		
@@ -149,15 +155,21 @@
 			console.log("success in retrieving questions");
 			$scope.isShown = true;
 		});
-		promise.error (function() {
+		promise.error (function(response, status) {
 			Notification.error('There was a problem retrieving questions from server. Try again after some time.');
-			console.log("error in retriving questions")
+			console.log("error in retriving questions");
+			console.log(status);
 			$scope.questions = questions_sample;
 			$scope.isShown = true;
+			if (status === 404) {
+				console.log('Authentication failed. Redirecting to error page');
+				$rootScope.$emit("logout");
+				$location.url('/auth-failed');
+			}
 		});
 	});
 	
-	app.controller('SearchQuestionsController', function($scope, $http, Notification) {
+	app.controller('SearchQuestionsController', function($scope, $rootScope, $http, Notification, $location) {
 		$scope.isSearching = false;
 		
 		$scope.searchQuestion = function(searchString) {
@@ -171,11 +183,16 @@
 				Notification.success('Search completed with '+data.length+' results');
 				document.getElementById("search-nav").reset();
 			});
-			promise.error (function() {
+			promise.error (function(response, status) {
 				Notification.error('There was a problem retrieving questions from server. Try again after some time.');
 				console.log("error in retriving questions")
 				$scope.questions = questions_sample;
 				$scope.isSearching = false;
+				if (status === 404) {
+					console.log('Authentication failed. Redirecting to error page');
+					$rootScope.$emit("logout");
+					$location.url('/auth-failed');
+				}
 			});
 		};
 		
