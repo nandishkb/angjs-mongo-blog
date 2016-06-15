@@ -1,5 +1,8 @@
 package com.codefox.blog.data;
 
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
+
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
@@ -16,8 +19,16 @@ public class MongoServiceFactory {
      * @return
      */
     public static Datastore getMongoDB(){
+        String address = "localhost";
+        try {
+            address = Inet4Address.getLocalHost().getHostAddress();
+            System.out.println("MongoServiceFactory.getMongoDB() address = "+address);
+        } catch (UnknownHostException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         if(mongoTL.get()==null){
-            MongoClientURI connectionString = new MongoClientURI("mongodb://localhost:27017");
+            MongoClientURI connectionString = new MongoClientURI("mongodb://"+address+":27017");
             MongoClient mongoClient = new MongoClient(connectionString);    
             Morphia morphia = new Morphia();
             morphia.mapPackage("com.codefox.blog.api");
