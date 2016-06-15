@@ -60,7 +60,7 @@
 	});
 	
 	app.controller('LoginController', function($scope, $rootScope, $http, Notification, $cookieStore) {
-
+		$scope.loginInProgress = false;
 		$scope.loginUser = function(credentials) {
 			console.log("Login Method called");
 			console.log(credentials);
@@ -86,6 +86,7 @@
 			
 			if (checkLoginPossible) {
 				var promise = $http.get("techblog/techspace/user/login");
+				$scope.loginInProgress = true;
 				promise.success(function() {
 					Notification.success('Login Successful.');
 					document.getElementById("login-nav").reset();
@@ -93,12 +94,14 @@
 					if (credentials.userName !== undefined) {
 						setCredentials(credentials.userName, credentials.password);
 					}
+					$scope.loginInProgress = false;
 				});
 				promise.error(function() {
 					Notification.error('Login Failed. Check your username/password and try again.');
 					document.getElementById("login-nav").reset();
 					console.log("Error in loggin in");
 					$scope.emitLoginStatus(false);
+					$scope.loginInProgress = false;
 				});
 			}
 		};

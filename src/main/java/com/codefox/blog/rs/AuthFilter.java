@@ -93,6 +93,8 @@ public class AuthFilter implements Filter {
                     hreq.getSession().setAttribute("user", username);
                     chain.doFilter(req, res);
                     return;
+                } else {
+                    hres.sendError(401, "Password Error");
                 }
             } else {
                 hres.sendError(401, "User not registered.");
