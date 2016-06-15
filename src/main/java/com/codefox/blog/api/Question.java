@@ -1,14 +1,21 @@
 
 package com.codefox.blog.api;
 
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Field;
 import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Index;
+import org.mongodb.morphia.annotations.Indexes;
 
 @Entity("questions")
+@Indexes(
+        @Index(value = "title", fields = @Field("title"))
+)
 public class Question {
 
     @Id
-    protected int questionId;
+    protected ObjectId qid;
 
     protected String title;
 
@@ -20,16 +27,8 @@ public class Question {
      * Gets the value of the questionId property.
      * 
      */
-    public int getQuestionId() {
-        return questionId;
-    }
-
-    /**
-     * Sets the value of the questionId property.
-     * 
-     */
-    public void setQuestionId(int value) {
-        this.questionId = value;
+    public ObjectId getQuestionId() {
+        return qid;
     }
 
     /**
@@ -82,7 +81,15 @@ public class Question {
 
     @Override
 	public String toString() {
-		return "Question [questionId=" + questionId + ", title=" + title + ", description=" + description + ", userName="
-				+ userName + "]";
+		return "Question [questionId=" + qid + ", title=" + title + ", description=" + description + ", userName="
+				+ getUserName() + "]";
 	}
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 }

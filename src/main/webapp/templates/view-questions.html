@@ -9,7 +9,6 @@
 						<th>No.</th>
 						<th>Question Title</th>
 						<th>Question Description</th>
-						<th>No. of Answers</th>
 					</tr>
 				</thead>
 				<tbody ng-show="isShown">
@@ -17,7 +16,6 @@
 						<td>{{$index + 1}}</td>
 						<td id='text-allign'>{{q.title}}</td>
 						<td id='text-allign'>{{q.description}}</td>
-						<td>{{q.answers.length}}</td>
 					</tr>
 				</tbody>
 			</table>

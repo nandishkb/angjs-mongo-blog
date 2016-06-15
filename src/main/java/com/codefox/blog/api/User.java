@@ -14,7 +14,7 @@ import org.mongodb.morphia.annotations.Indexes;
  */
 @Entity("users")
 @Indexes(
-    @Index(value = "userName", fields = @Field("userName"))
+    @Index(value = "email", fields = @Field("email"))
 )
 public class User {
     
@@ -68,7 +68,12 @@ public class User {
     }
 
     public String toString() {
-		return "User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+		return "User [userId=" + getUserId() + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
 				+ ", phoneNumber=" + phoneNumber + ", password=" + password + "]";
 	}
+
+    public ObjectId getUserId() {
+        return userId;
+    }
+
 }

@@ -2,7 +2,7 @@
  * 
  */
 (function() {
-	var app = angular.module('blog', ['ngRoute', 'ui-notification']);
+	var app = angular.module('blog', ['ngRoute', 'ui-notification', 'ngCookies']);
 	
 	app.controller('NavbarController', function($timeout, $scope, $rootScope, $location) {
 		
@@ -59,28 +59,51 @@
 		};
 	});
 	
-	app.controller('LoginController', function($scope, $rootScope, $http, Notification) {
+	app.controller('LoginController', function($scope, $rootScope, $http, Notification, $cookieStore) {
 
-		$scope.logginIn = false;
 		$scope.loginUser = function(credentials) {
 			console.log("Login Method called");
 			console.log(credentials);
-			$scope.logginIn = true;
-			var promise = $http.post("blog/techspace/user/login", credentials);
-			promise.success(function() {
-				$scope.logginIn=false;
-				Notification.success('Login Successful.');
-				document.getElementById("login-nav").reset();
-				$scope.emitLoginStatus(true);
-			});
-			promise.error(function() {
-				$scope.adding=false;
-				Notification.error('Login Failed. Check your username/password and try again.');
-				document.getElementById("login-nav").reset();
-				console.log("Error in loggin in");
-				$scope.emitLoginStatus(false);
-			});
+			var checkLoginPossible = false;
+			// Trying to login during page refresh
+			if (credentials.userName === undefined) { 
+				$rootScope.globals = $cookieStore.get('globals') || {};
+				console.log("userName === undefined")
+		        if ($rootScope.globals.currentUser) {
+		        	console.log("Found user details in cookie");
+		        	console.log("Found = "+$rootScope.globals.currentUser.authdata);
+		        	console.log("Found = "+$rootScope.globals.currentUser.userName);
+		            $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
+		            checkLoginPossible = true;
+		        }
+			} else {
+				console.log('userName !== undefined')
+				var auth = btoa(credentials.userName + ":" + credentials.password);
+				$http.defaults.headers.common['Authorization'] = 'Basic ' + auth;
+				console.log(auth);
+				checkLoginPossible = true;
+			}
+			
+			if (checkLoginPossible) {
+				var promise = $http.get("blog/techspace/user/login");
+				promise.success(function() {
+					Notification.success('Login Successful.');
+					document.getElementById("login-nav").reset();
+					$scope.emitLoginStatus(true);
+					if (credentials.userName !== undefined) {
+						setCredentials(credentials.userName, credentials.password);
+					}
+				});
+				promise.error(function() {
+					Notification.error('Login Failed. Check your username/password and try again.');
+					document.getElementById("login-nav").reset();
+					console.log("Error in loggin in");
+					$scope.emitLoginStatus(false);
+				});
+			}
 		};
+		
+		
 		$scope.emitLoginStatus = function(data) {
 			console.log(data);
 			if (data) {
@@ -91,12 +114,25 @@
         }
 		
 		$rootScope.$on("performLogin", function() {
-			console.log("start login process");
 			$scope.loginUser({});
 	    });
+		
+		function setCredentials(username, password) {
+            var authdata = btoa(username + ":" + password)
+ 
+            $rootScope.globals = {
+                currentUser: {
+                    'userName': username,
+                    'authdata': authdata
+                }
+            };
+ 
+            $cookieStore.put('globals', $rootScope.globals);
+        }
+		
 	});
 	
-	app.controller('LogoutController', function($scope, $rootScope, $http, Notification) {
+	app.controller('LogoutController', function($scope, $rootScope, $http, Notification, $cookieStore) {
 
 		$scope.logout = function() {
 			console.log("Logout Method called");
@@ -104,11 +140,13 @@
 			promise.success(function() {
 				Notification.success('Logout Successful.');
 				$scope.emitLogoutStatus(true);
+				resetData();
 			});
 			promise.error(function() {
 				Notification.error('Logout error');
 				console.log("Error in loggout");
 				$scope.emitLogoutStatus(false);
+				resetData();
 			});
 		};
 		$scope.emitLogoutStatus = function(data) {
@@ -118,20 +156,28 @@
 			} else {
 				$rootScope.$emit("logout");
 			}
-        }
+        };
+		
+		function resetData() {
+            $rootScope.globals = {};
+            $cookieStore.remove('globals');
+            $http.defaults.headers.common.Authorization = '';
+        };
 	});
 	
-	app.controller('AskQuestionController', function($scope, $rootScope, $http, Notification, $location) {
+	app.controller('AskQuestionController', function($scope, $rootScope, $http, Notification, $location, $cookieStore) {
 		$scope.adding = false;
 		$scope.submitQuestion = function(question) {
 			console.log("Submit Question Method called");
 			console.log(question);
 			$scope.adding = true;
+			addUserName(question);
+			console.log(question);
 			var promise = $http.post("blog/techspace/question", question);
 			promise.success(function() {
 				$scope.adding=false;
 				Notification.success('Question successfully posted');
-				document.getElementById("register-nav").reset();
+				document.getElementById("ask-question-nav").reset();
 			});
 			promise.error(function(response, status) {
 				$scope.adding=false;
@@ -144,6 +190,19 @@
 				}
 			});
 		};
+		
+		function addUserName(q) {
+			$rootScope.globals = $cookieStore.get('globals') || {};
+	        if ($rootScope.globals.currentUser) {
+	        	console.log("Found user details in cookie");
+	        	console.log("Found = "+$rootScope.globals.currentUser.authdata);
+	        	console.log("Found = "+$rootScope.globals.currentUser.userName);
+	        	q.userName = $rootScope.globals.currentUser.userName;
+	        } else {
+	        	console.log("Error in adding user. So adding anonymous user name");
+	        	q.userName = "Anonymous";
+	        }
+		}
 	});
 	
 	app.controller('ViewQuestionsController', function($scope, $rootScope, $http, Notification, $location) {
@@ -159,7 +218,6 @@
 			Notification.error('There was a problem retrieving questions from server. Try again after some time.');
 			console.log("error in retriving questions");
 			console.log(status);
-			$scope.questions = questions_sample;
 			$scope.isShown = true;
 			if (status === 401) {
 				console.log('Authentication failed. Redirecting to error page');
@@ -186,7 +244,6 @@
 			promise.error (function(response, status) {
 				Notification.error('There was a problem retrieving questions from server. Try again after some time.');
 				console.log("error in retriving questions")
-				$scope.questions = questions_sample;
 				$scope.isSearching = false;
 				if (status === 401) {
 					console.log('Authentication failed. Redirecting to error page');

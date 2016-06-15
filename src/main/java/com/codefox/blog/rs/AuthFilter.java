@@ -94,6 +94,8 @@ public class AuthFilter implements Filter {
                     chain.doFilter(req, res);
                     return;
                 }
+            } else {
+                hres.sendError(401, "User not registered.");
             }
         } else {
             hres.sendError(401, "Invalid authenitcation details");
