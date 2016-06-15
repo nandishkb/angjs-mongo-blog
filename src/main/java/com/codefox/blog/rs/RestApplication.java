@@ -5,7 +5,7 @@ import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-@ApplicationPath("/blog")
+@ApplicationPath("/techblog")
 public class RestApplication extends Application {
 	private Set<Object> singletons = new HashSet<Object>();
 	private Set<Class<?>> empty = new HashSet<Class<?>>();

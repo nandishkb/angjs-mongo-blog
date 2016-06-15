@@ -23,7 +23,7 @@ import com.codefox.blog.api.WebBlog;
  *
  */
 // Apply to all API urls
-@WebFilter("/blog/*")
+@WebFilter("/techblog/*")
 public class AuthFilter implements Filter {
 
     public void destroy() {

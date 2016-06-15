@@ -45,7 +45,7 @@
 			console.log("Register Method called");
 			console.log(userData);
 			$scope.adding = true;
-			var promise = $http.post("blog/techspace/user/register", userData);
+			var promise = $http.post("techblog/techspace/user/register", userData);
 			promise.success(function() {
 				$scope.adding=false;
 				Notification.success('Registration Successful. Please login now.');
@@ -85,7 +85,7 @@
 			}
 			
 			if (checkLoginPossible) {
-				var promise = $http.get("blog/techspace/user/login");
+				var promise = $http.get("techblog/techspace/user/login");
 				promise.success(function() {
 					Notification.success('Login Successful.');
 					document.getElementById("login-nav").reset();
@@ -136,7 +136,7 @@
 
 		$scope.logout = function() {
 			console.log("Logout Method called");
-			var promise = $http.get("blog/techspace/user/logout");
+			var promise = $http.get("techblog/techspace/user/logout");
 			promise.success(function() {
 				Notification.success('Logout Successful.');
 				$scope.emitLogoutStatus(true);
@@ -173,7 +173,7 @@
 			$scope.adding = true;
 			addUserName(question);
 			console.log(question);
-			var promise = $http.post("blog/techspace/question", question);
+			var promise = $http.post("techblog/techspace/question", question);
 			promise.success(function() {
 				$scope.adding=false;
 				Notification.success('Question successfully posted');
@@ -207,7 +207,7 @@
 	
 	app.controller('ViewQuestionsController', function($scope, $rootScope, $http, Notification, $location) {
 		$scope.isShown = false;
-		var promise = $http.get("blog/techspace/questions");
+		var promise = $http.get("techblog/techspace/questions");
 		
 		promise.success(function(data) {
 			$scope.questions = data;
@@ -232,7 +232,7 @@
 		
 		$scope.searchQuestion = function(searchString) {
 			$scope.isSearching = true;
-			var promise = $http.get("blog/techspace/questions/"+searchString);
+			var promise = $http.get("techblog/techspace/questions/"+searchString);
 			
 			promise.success(function(data) {
 				$scope.questions = data;
