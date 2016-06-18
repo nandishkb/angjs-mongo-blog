@@ -9,13 +9,14 @@ import com.codefox.blog.api.User;
 import com.codefox.blog.api.UserDTO;
 import com.codefox.blog.api.WebBlog;
 import com.codefox.blog.data.BlogDAO;
+import com.codefox.blog.data.DAO;
 
 public class CodeFoxBlog implements WebBlog {
 
     public CodeFoxBlog() {
     }
     
-    private BlogDAO dao = BlogDAO.getInstance();
+    private DAO dao = BlogDAO.getInstance();
 
     @Override
     public void addQuestion(Question question) throws BlogException {
@@ -71,7 +72,7 @@ public class CodeFoxBlog implements WebBlog {
         return dao.findAnswers(questionId);
     }
     
-    public void setBlogDao(BlogDAO dao) {
+    public void setBlogDao(DAO dao) {
         this.dao = dao;
     }
 

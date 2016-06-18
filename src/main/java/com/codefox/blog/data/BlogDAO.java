@@ -9,7 +9,7 @@ import com.codefox.blog.api.Answer;
 import com.codefox.blog.api.Question;
 import com.codefox.blog.api.User;
 
-public class BlogDAO {
+public class BlogDAO implements DAO {
 
     private static BlogDAO dao = null;
 
@@ -32,11 +32,6 @@ public class BlogDAO {
         dataStore.save(user);
     }
     
-    
-    public User getUser(int userId) {
-        return null;
-    }
-
     public User getUser(String email) {
         List<User> users = MongoServiceFactory.getMongoDB().createQuery(User.class).field("email")
                 .equal(email).asList();
