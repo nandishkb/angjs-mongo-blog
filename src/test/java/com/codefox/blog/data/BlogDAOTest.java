@@ -14,8 +14,8 @@ public class BlogDAOTest implements DAO {
 
     private static final Object LOCK = new Object();
     
-    private List<User> users = new ArrayList<>();
-    private List<Question> questions = new ArrayList<>();
+    private List<User> users = new ArrayList<User>();
+    private List<Question> questions = new ArrayList<Question>();
 
     private BlogDAOTest() {
     }
