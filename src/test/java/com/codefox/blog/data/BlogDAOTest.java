@@ -60,7 +60,7 @@ public class BlogDAOTest implements DAO {
     }
 
     public List<Question> findQuestions(String searchPattern) {
-        List<Question> result = new ArrayList<>();
+        List<Question> result = new ArrayList<Question>();
         for (Iterator<Question> iterator = questions.iterator(); iterator.hasNext();) {
             Question question = (Question) iterator.next();
             String title = question.getTitle();
